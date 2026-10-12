@@ -80,7 +80,8 @@ if __name__ == "__main__":
         if argv[1] != "-h":
             try:
                 stack = StackMachin()
-                print(stack.start(argv[1]))
+                print("Stack machine is working...")
+                print("Result of expression:",stack.start(argv[1]))
             except Exception as e:
                 print(f"Something happend\nError: {e}")
                 print("In next time you should be more carefully")
