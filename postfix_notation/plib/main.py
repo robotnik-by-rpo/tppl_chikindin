@@ -2,9 +2,7 @@ from typing import Callable, Dict
 from sys import argv
 
 class StackMachin:
-    __stack: list[int] = []
-    __operation: dict[str, Callable[[],int]]
-    __items: list[str] = []
+
 
     def __init__(self) -> None:
         self.__operation = {"+": self.__plus,
@@ -12,55 +10,65 @@ class StackMachin:
                             "*": self.__mul,
                             "/": self.__div,
                             "~": self.__tilda}
+        self.__stack: list[int] = []
+        self.__operation: dict[str, Callable[[],int]]
+        self.__items: list[str] = []
 
     def start(self, input_line: str)->int:
         self.__items = self.is_empty(input_line).split(" ")
         for s in self.__items:
             if s not in "/*+-~":
+                print(self.__stack,"<-",s)
                 self.__stack.append(int(s))
-                print(self.__stack)
             elif s in "/*+-~":
                 num = self.__operation[s]()
+                print(self.__stack,"<-",num)
                 self.__stack.append(num)
             else:
                 raise ValueError("wrong letter","line must have nums, spaces or any element like -*/+~")
         return self.__stack.pop()
     
     def __plus(self) -> int:
-        print("plus:",self.__stack)
-        total = 0
-        while self.__stack :
-            total += self.__stack.pop()
-        return total
+        b = self.__stack.pop()
+        a = self.__stack.pop()
+        print("plus:",self.__stack,"->",a,b)
+        return a + b
+
     
     def __minus(self) -> int:
         print("minus:",self.__stack)
-        total = 0
-        while self.__stack :
-            total -= self.__stack.pop()
-        return total
+        b = self.__stack.pop()
+        a = self.__stack.pop()
+        print("minus:",self.__stack,"->",a,b)
+        return a - b
         
 
     def __mul(self) -> int:
-        total = 1
-        print("multply:",self.__stack)
-
-        while self.__stack:
-            total *= self.__stack.pop()
-        return total
+        b = self.__stack.pop()
+        a = self.__stack.pop()
+        print("multiply:",self.__stack,"->",a,b)
+        return a * b
 
     def __div(self) -> int:
-        print("div:",self.__stack)
-        delimeter = self.__stack.pop()
-        return self.__operation["+"]() / delimeter
+        print("div:", self.__stack)
+        divisor = self.__stack.pop()
+        dividend = self.__stack.pop()
+        if divisor == 0:
+            raise ZeroDivisionError("division by zero", "delimeter must be not zero value")
+        print("plus:",self.__stack,"->",divisor,dividend)
+        return dividend // divisor
 
     def __tilda(self) -> int:
-        print("tilda:",self.__stack)
-        num1 = self.__stack.pop()
-        num2 = self.__stack.pop()
-        if num1 and num2:
-            return abs(num1-num2)
-        return self.__operation["+"]() ** 2
+        
+        b = self.__stack.pop()
+        a = self.__stack.pop()
+        print("tilda:",self.__stack,"->",a,b)
+        if a and b:
+            return abs(a - b)
+        total = 0
+        while self.__stack:
+            total += self.__stack.pop()
+        return total ** 2
 
     def is_empty(self, line: str) -> str:
         if len(line) == 0:
