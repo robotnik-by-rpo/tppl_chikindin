@@ -15,17 +15,15 @@ class StackMachin:
         self.__items: list[str] = []
 
     def start(self, input_line: str)->int:
-        self.__items = self.is_empty(input_line).split(" ")
+        self.__items = self.is_empty(input_line).split()
         for s in self.__items:
-            if s not in "/*+-~":
-                print(self.__stack,"<-",s)
-                self.__stack.append(int(s))
-            elif s in "/*+-~":
+            if s in self.__operation:
                 num = self.__operation[s]()
-                print(self.__stack,"<-",num)
+                print(self.__stack, "<-", num)
                 self.__stack.append(num)
             else:
-                raise ValueError("wrong letter","line must have nums, spaces or any element like -*/+~")
+                print(self.__stack, "<-", s)
+                self.__stack.append(int(s))
         return self.__stack.pop()
     
     def __plus(self) -> int:
@@ -71,7 +69,7 @@ class StackMachin:
         return total ** 2
 
     def is_empty(self, line: str) -> str:
-        if len(line) == 0:
+        if len(line.strip()) == 0:
             raise NameError("empty line", "line must be not empty")
         return line
     
@@ -93,6 +91,10 @@ I support operation +*/-~.
 What is a operator ~ ? 
 If both operands are not 0: compute the absolute value of the difference `|x - y|` and push the result back onto the stack.
 If at least one of the operands is 0: calculates the sum of all values on the stack, squares it, and pushes the result back onto the stack.
+Example call in path ./postfix_notation/plib:
+python3 main.py "5 3 +"
+Example call from Makefile in root directory:
+make run EXP="5 3 +"
 """)
         
     else:
