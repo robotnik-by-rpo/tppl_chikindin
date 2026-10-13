@@ -10,11 +10,11 @@ class StackMachin:
                             "*": self.__mul,
                             "/": self.__div,
                             "~": self.__tilda}
-        self.__stack: list[int] = []
-        self.__operation: dict[str, Callable[[],int]]
+        self.__stack: list[float] = []
+        self.__operation: dict[str, Callable[[],float]]
         self.__items: list[str] = []
 
-    def start(self, input_line: str)->int:
+    def start(self, input_line: str)->float:
         self.__items = self.is_empty(input_line).split()
         for s in self.__items:
             if s in self.__operation:
@@ -23,17 +23,17 @@ class StackMachin:
                 self.__stack.append(num)
             else:
                 print(self.__stack, "<-", s)
-                self.__stack.append(int(s))
+                self.__stack.append(float(s))
         return self.__stack.pop()
     
-    def __plus(self) -> int:
+    def __plus(self) -> float:
         b = self.__stack.pop()
         a = self.__stack.pop()
         print("plus:",self.__stack,"->",a,b)
         return a + b
 
     
-    def __minus(self) -> int:
+    def __minus(self) -> float:
         print("minus:",self.__stack)
         b = self.__stack.pop()
         a = self.__stack.pop()
@@ -41,13 +41,13 @@ class StackMachin:
         return a - b
         
 
-    def __mul(self) -> int:
+    def __mul(self) -> float:
         b = self.__stack.pop()
         a = self.__stack.pop()
         print("multiply:",self.__stack,"->",a,b)
         return a * b
 
-    def __div(self) -> int:
+    def __div(self) -> float:
         print("div:", self.__stack)
         divisor = self.__stack.pop()
         dividend = self.__stack.pop()
@@ -56,7 +56,7 @@ class StackMachin:
         print("plus:",self.__stack,"->",divisor,dividend)
         return dividend // divisor
 
-    def __tilda(self) -> int:
+    def __tilda(self) -> float:
         
         b = self.__stack.pop()
         a = self.__stack.pop()
@@ -95,6 +95,8 @@ Example call in path ./postfix_notation/plib:
 python3 main.py "5 3 +"
 Example call from Makefile in root directory:
 make run EXP="5 3 +"
+Example call if you want use numbers with point.
+make run EXP="5.2 3 +"
 """)
         
     else:
