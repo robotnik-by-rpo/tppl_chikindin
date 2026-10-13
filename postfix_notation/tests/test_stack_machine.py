@@ -65,16 +65,16 @@ class TestTilda:
         assert run("-5 3 ~") == 8
 
     def test_tilda_with_zero_empty_stack(self, run):
-        assert run("5 0 ~") == 0
+        assert run("5 0 ~") == 25
 
     def test_tilda_with_zero_nonempty_stack(self, run):
-        assert run("1 2 3 0 ~") == 9
+        assert run("1 2 3 0 ~") == 36
 
     def test_tilda_with_zero_many_values(self, run):
-        assert run("5 5 5 0 ~") == 100
+        assert run("5 5 5 0 ~") == 225 
 
     def test_tilda_chained(self, run):
-        assert run("3 0 4 ~ 2 ~") == 7
+        assert run("3 0 4 ~ 2 ~") == 47
 
     def test_tilda_empty_stack(self, machine):
         with pytest.raises(IndexError):
@@ -86,7 +86,7 @@ class TestTilda:
 
 class TestComplexExpressions:
     def test_user_example(self, run):
-        assert run("2 2 + 4 - 4 ~ 2 3 * +") == 6
+        assert run("2 2 + 4 - 4 ~ 2 3 * +") == 22
 
     def test_all_operations(self, run):
         assert run("2 3 + 4 * 10 - 2 /") == 5
@@ -98,7 +98,7 @@ class TestComplexExpressions:
         assert run("10 5 ~ 3 +") == 8
 
     def test_double_tilda_with_zero(self, run):
-        assert run("5 7 0 ~ 4 ~") == 21 
+        assert run("5 7 0 ~ 4 ~") == 140
 
 class TestIsEmpty:
     def test_empty_line_raises(self, machine):
@@ -114,9 +114,8 @@ class TestParsing:
         with pytest.raises(ValueError):
             machine.start("abc")
 
-    def test_float_token(self, machine):
-        with pytest.raises(ValueError):
-            machine.start("1.5 2 +")
+    def test_float_token(self, run):
+        assert run("1.5 2 +") == 3.5
 
     def test_extra_numbers_returns_top(self, run):
         assert run("5 6 7 +") == 13

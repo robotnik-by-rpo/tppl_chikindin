@@ -66,7 +66,7 @@ class StackMachin:
         total = 0
         while self.__stack:
             total += self.__stack.pop()
-        return total ** 2
+        return (total + a + b) ** 2
 
     def is_empty(self, line: str) -> str:
         if len(line.strip()) == 0:
