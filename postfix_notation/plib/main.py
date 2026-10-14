@@ -5,13 +5,12 @@ class StackMachin:
 
 
     def __init__(self) -> None:
-        self.__operation = {"+": self.__plus,
+        self.__operation: dict[str, Callable[[],float]] = {"+": self.__plus,
                             "-": self.__minus,
                             "*": self.__mul,
                             "/": self.__div,
                             "~": self.__tilda}
         self.__stack: list[float] = []
-        self.__operation: dict[str, Callable[[],float]]
         self.__items: list[str] = []
 
     def start(self, input_line: str)->float:
